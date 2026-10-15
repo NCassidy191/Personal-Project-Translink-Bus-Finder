@@ -1,5 +1,5 @@
 """
-Translink Newry → Belfast availability checker (read-only).
+Translink Newry ---> Belfast availability checker 
 
 - Prompts for a date and time
 - Loads the Translink journey planner with query parameters
@@ -16,9 +16,9 @@ from zoneinfo import ZoneInfo
 from playwright.async_api import async_playwright
 
 
-# --------------------------------------------------------------------------- #
+# 
 # URL construction
-# --------------------------------------------------------------------------- #
+# 
 
 BASE = "https://www.translink.co.uk/journeyplannerv2"
 
@@ -47,9 +47,9 @@ def build_url(dt_iso: str) -> str:
     return f"{BASE}?{urlencode(params)}"
 
 
-# --------------------------------------------------------------------------- #
+# 
 # User input parsing
-# --------------------------------------------------------------------------- #
+# 
 
 WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday",
             "friday", "saturday", "sunday"]
@@ -123,18 +123,16 @@ def prompt_for_datetime() -> str:
             print(f"  {e}\n  Try again.\n")
 
 
-# --------------------------------------------------------------------------- #
+# 
 # Scraping
-# --------------------------------------------------------------------------- #
-
-def normalise(text: str) -> str:
+#  
     """Collapse all whitespace (incl. \\xa0, \\n, \\t) to single spaces."""
     return re.sub(r"\s+", " ", text).strip()
 
 
 async def scrape_journeys(page) -> list[dict]:
     """Return a list of dicts with depart, arrive, price, mode."""
-    # Wait for at least one journey button to appear
+    # Wait for a journey button to appear
     await page.wait_for_selector(
         "button[aria-label^='View journey']", timeout=25000
     )
@@ -163,12 +161,12 @@ async def scrape_journeys(page) -> list[dict]:
     return journeys
 
 
-# --------------------------------------------------------------------------- #
+# 
 # Main
-# --------------------------------------------------------------------------- #
+#
 
 async def main():
-    print("Translink Newry → Belfast availability checker\n")
+    print("Translink Newry to Belfast availability checker\n")
     iso = prompt_for_datetime()
     url = build_url(iso)
 
